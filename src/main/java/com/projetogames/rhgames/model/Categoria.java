@@ -22,7 +22,7 @@ public class Categoria {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	@Size(min = 3, max = 100)
 	private String genero;
@@ -30,8 +30,7 @@ public class Categoria {
 	@OneToMany(mappedBy = "categoria", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("categoria")
 	private List<Produtos> produtos;
-	
-	
+
 	public List<Produtos> getProdutos() {
 		return produtos;
 	}
@@ -56,5 +55,4 @@ public class Categoria {
 		this.genero = genero;
 	}
 
-	
 }

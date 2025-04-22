@@ -30,49 +30,46 @@ import jakarta.validation.Valid;
 
 public class ProdutosController {
 
-	@Autowired 
+	@Autowired
 	private ProdutosRepository produtosRepository;
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
-	
+
 	@GetMapping
 	public ResponseEntity<List<Produtos>> getAll() {
 		return ResponseEntity.ok(produtosRepository.findAll());
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Produtos> getById(@PathVariable Long id){
+	public ResponseEntity<Produtos> getById(@PathVariable Long id) {
 		return produtosRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
-	
+
 	@GetMapping("/titulo/{titulo}")
 	public ResponseEntity<List<Produtos>> getByTitulo(@PathVariable String titulo) {
 		return ResponseEntity.ok(produtosRepository.findAllByTituloContainingIgnoreCase(titulo));
 	}
-	
-	
+
 	@PostMapping
-	public ResponseEntity<Produtos> post(@Valid @RequestBody Produtos produtos){
+	public ResponseEntity<Produtos> post(@Valid @RequestBody Produtos produtos) {
 		if (produtos.getCategoria() == null || produtos.getCategoria().getId() == null)
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id da Categoria é Obrigatório");
 
 		if (!categoriaRepository.existsById(produtos.getCategoria().getId()))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não existe!", null);
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtosRepository.save(produtos));
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<Produtos> put(@Valid @RequestBody Produtos produtos) {
 		return produtosRepository.findById(produtos.getId())
 				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(produtosRepository.save(produtos)))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
-	
-	
+
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
@@ -81,6 +78,5 @@ public class ProdutosController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		produtosRepository.deleteById(id);
 	}
-	
-	
+
 }

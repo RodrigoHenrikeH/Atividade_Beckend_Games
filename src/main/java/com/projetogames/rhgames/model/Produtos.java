@@ -24,16 +24,16 @@ public class Produtos {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	@Size(min = 1, max = 100)
 	private String titulo;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@NotNull(message = "Preço é obrigatório!")
 	@Positive(message = "O preço deve ser maior do que zero!")
 	private BigDecimal preco;
-	
+
 	@NotBlank
 	@Size(min = 2, max = 100)
 	private String plataforma;
@@ -41,8 +41,7 @@ public class Produtos {
 	@ManyToOne
 	@JsonIgnoreProperties("produtos")
 	private Categoria categoria;
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -83,5 +82,4 @@ public class Produtos {
 		this.categoria = categoria;
 	}
 
-	
 }
